@@ -110,18 +110,21 @@ function drawTwo(){
         localStorage.setItem('currentOutcome', p1Outcome);
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
+        changeDrawButton(data.remaining, 2);
       } else if (player1Val < player2Val){
         addScore('player2', 2);
         outcome.innerText = p2Outcome;
         localStorage.setItem('currentOutcome', p2Outcome);
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
+        changeDrawButton(data.remaining, 2);
       } else {
         outcome.innerText = warOutcome;
         localStorage.setItem('currentOutcome', warOutcome);
         warButton.style.visibility = 'visible';
         draw2Button.style.visibility = 'hidden';
         localStorage.setItem('war', true);
+        changeDrawButton(data.remaining, 4);
       }
 
       player1Score.innerText = localStorage.getItem('player1')
@@ -164,6 +167,7 @@ function drawFour(){
         localStorage.removeItem('war');
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
+        changeDrawButton(data.remaining, 2);
       } else if (player1Val < player2Val){
         addScore('player2', 4);
         outcome.innerText = p2WarOutcome;
@@ -171,12 +175,14 @@ function drawFour(){
         localStorage.removeItem('war');
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
+        changeDrawButton(data.remaining, 2);
       } else {
         outcome.innerText = warOutcomeContinue;
         localStorage.setItem('currentOutcome', warOutcomeContinue);
         warButton.style.visibility = 'visible';
         draw2Button.style.visibility = 'hidden';
         localStorage.setItem('war', true);
+        changeDrawButton(data.remaining, 4);
       }
 
       player1Score.innerText = localStorage.getItem('player1')
@@ -229,8 +235,6 @@ function clearScreen(data){
 function checkCardsLeft(draw){
   if (Number(localStorage.getItem('cardsLeft')) > draw){
     return;
-  } else if(Number(localStorage.getItem('cardsLeft')) === draw){
-    draw2Button.innerText = 'Finish Game'
   } else if(Number(localStorage.getItem('player1')) > Number(localStorage.getItem('player2'))) {
     outcome.innerText = p1Win;
     localStorage.setItem('currentOutcome', p1Win);
@@ -249,5 +253,11 @@ function checkCardsLeft(draw){
     draw2Button.style.visibility = 'hidden';
     warButton.style.visibility = 'hidden';
     localStorage.setItem('gameOver', true);
+  }
+}
+
+function changeDrawButton(remaining, draw){
+  if (remaining === draw){
+    draw2Button.innerText = "Finish Game"
   }
 }
