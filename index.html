@@ -10,29 +10,38 @@
 		<!-- external CSS link -->
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/style.css">
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Mukta&display=swap" rel="stylesheet"> 
 	</head>
 	<body>
 		<h1>The Game of War!</h1>
-
-		<button id='newGame'>New Game</button>
-		
-		<h3 id="cardsLeft"></h3>
-
-		<h2>Player</h2>
-		<h3>Score:</h3><h3 id="player1Score"></h3>
-		<img id="player1" src="" alt="playing card">
-		<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
-
-		<h2>Computer</h2>
-		<h3>Score:</h3><h3 id="player2Score"></h3>
-		<img id="player2" src="" alt="playing card">
-		<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
-
-		<h2 id='outcome'></h2>
-
-		<button id='draw2'>Deal 2 Cards</button>
-		<button id='war'>WAR!</button>
-
+		<section id="gameArea">
+			<section id="info">
+				<h3 id="cardsLeft"></h3>
+				<h2>Player</h2>
+				<section class="scoreSection">
+					<h3>Score:</h3>
+					<h3 id="player1Score"></h3>
+				</section>
+				<img id="player1" src="" alt="playing card">
+				<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
+				<h2>Computer</h2>
+				<section class="scoreSection">
+					<h3>Score:</h3>
+					<h3 id="player2Score"></h3>
+				</section>
+				<img id="player2" src="" alt="playing card">
+				<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
+			</section>
+			<section id="results">
+				<h3 id='outcome'></h3>
+				<button id='newGame'>New Game</button>
+				<button id='draw2'>Deal 2 Cards</button>
+				<button id='war'>WAR!</button>
+			</section>
+		</section>
 		<script type="text/javascript" src="js/main.js"></script>
 	</body>
 </html>

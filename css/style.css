@@ -10,6 +10,13 @@
 /******************************************
 /* LAYOUT
 /*******************************************/
+body{
+  background: #c31432;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #240b36, #c31432); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white;
+}
+
 img{
   margin: 0 auto;
   height: 100px;
@@ -21,6 +28,66 @@ img{
 
 #war{
   visibility: hidden;
+}
+
+#gameArea{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#gameArea > *{
+  width: 50%;
+}
+
+#results{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 100px 0;
+}
+
+h1, h2{
+  font-family: 'Black Ops One', cursive;
+  margin: 5px 0;
+}
+
+h3{
+  font-family: 'Mukta', sans-serif;
+}
+
+#outcome{
+  font-size: 180%;
+}
+
+#cardsLeft{
+  font-style: italic;
+}
+
+.scoreSection{
+  display: flex;
+}
+
+.scoreSection *{
+  margin-right: 10px;
+}
+
+button{
+  border-radius: 8px;
+  font-family: 'Mukta', sans-serif;
+  font-weight: bold;
+  color: white;
+  background: #00B4DB;
+  background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);
+  background: linear-gradient(to right, #0083B0, #00B4DB);
+  margin: 10px 0;
+  width: 200px;
+}
+
+#newGame{
+  background: #ED213A;  
+  background: -webkit-linear-gradient(to right, #93291E, #ED213A);  
+  background: linear-gradient(to right, #93291E, #ED213A);
 }
 /******************************************
 /* ADDITIONAL STYLES

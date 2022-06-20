@@ -34,37 +34,37 @@ if (localStorage.getItem('deckId')){
   if (localStorage.getItem('player1Img') && localStorage.getItem('player2Img')){
     player1Img.src = localStorage.getItem('player1Img');
     player2Img.src = localStorage.getItem('player2Img');
-    console.log("displaying player cards!");
+    // console.log("displaying player cards!");
   } else {
     player1Img.style.visibility = 'hidden';
     player2Img.style.visibility = 'hidden';
-    console.log("hiding empty cards!");
+    // console.log("hiding empty cards!");
   }
 
   if (localStorage.getItem('war')){
     warButton.style.visibility = 'visible';
     cardBacks.forEach(card => card.style.visibility = 'visible');
-    console.log("showing card backs!");
+    // console.log("showing card backs!");
   } else {
     warButton.style.visibility = 'hidden';
     cardBacks.forEach(card => card.style.visibility = 'hidden');
-    console.log("hiding card backs!");
+    // console.log("hiding card backs!");
   }
 
   if (localStorage.getItem('gameOver')){
     draw2Button.style.visibility = 'hidden';
     warButton.style.visibility = 'hidden';
-    console.log("game over!");
+    // console.log("game over!");
   } else {
     draw2Button.style.visibility = 'visible';
-    console.log("game continues!");
+    // console.log("game continues!");
   }
 } else {
   player1Img.style.visibility = 'hidden';
   player2Img.style.visibility = 'hidden';
 }
 
-console.log(`Local var deckId = ${deckId}`);
+// console.log(`Local var deckId = ${deckId}`);
 
 function newGame(){
   const url = 'https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1';
@@ -76,10 +76,10 @@ function newGame(){
         localStorage.setItem('deckId', data.deck_id);
         localStorage.setItem('cardsLeft', data.remaining);
         deckId = localStorage.getItem('deckId');
-        console.log(deckId);
+        // console.log(deckId);
       })
       .catch(err => {
-          console.log(`error ${err}`);
+          outcome.innerText = `Error (don't draw too fast...)! ${err}`;
       });
 }
 
@@ -103,7 +103,7 @@ function drawTwo(){
       localStorage.setItem('player1Img', player1Img.src);
       let player2Val = getCardValue(data.cards[1].value);
       localStorage.setItem('player2Img', player2Img.src);
-      console.log(deckId);
+      // console.log(deckId);
 
       if (player1Val > player2Val){
         addScore('player1', 2);
@@ -133,10 +133,10 @@ function drawTwo(){
 
       localStorage.setItem('cardsLeft', data.remaining);
       cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
-      console.log(`Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
+      // console.log(`Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
     })
     .catch(err => {
-      console.log(`error ${err}`);
+      outcome.innerText = `Error (don't draw too fast...)! ${err}`;
     });
 }
 
@@ -160,7 +160,7 @@ function drawFour(){
       localStorage.setItem('player1Img', player1Img.src);
       let player2Val = getCardValue(data.cards[2].value);
       localStorage.setItem('player2Img', player2Img.src);
-      console.log(deckId);
+      // console.log(deckId);
 
       if (player1Val > player2Val){
         addScore('player1', 4);
@@ -169,6 +169,7 @@ function drawFour(){
         localStorage.removeItem('war');
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
+        cardBacks.forEach(a => a.style.visibility = 'hidden');
         changeDrawButton(data.remaining, 2);
       } else if (player1Val < player2Val){
         addScore('player2', 4);
@@ -178,6 +179,7 @@ function drawFour(){
         warButton.style.visibility = 'hidden';
         draw2Button.style.visibility = 'visible';
         changeDrawButton(data.remaining, 2);
+        cardBacks.forEach(a => a.style.visibility = 'hidden');
       } else {
         outcome.innerText = warOutcomeContinue;
         localStorage.setItem('currentOutcome', warOutcomeContinue);
@@ -192,10 +194,10 @@ function drawFour(){
 
       localStorage.setItem('cardsLeft', data.remaining);
       cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
-      console.log(`WAR!! Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
+      // console.log(`WAR!! Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
     })
     .catch(err => {
-      console.log(`error ${err}`);
+      outcome.innerText = `Error (don't draw too fast...)! ${err}`;
     });
 }
 
