@@ -160,16 +160,19 @@ function drawFour(){
         localStorage.setItem('currentOutcome', p1WarOutcome);
         localStorage.removeItem('war');
         warButton.style.visibility = 'hidden';
+        draw2Button.style.visibility = 'visible';
       } else if (player1Val < player2Val){
         addScore('player2', 4);
         outcome.innerText = p2WarOutcome;
         localStorage.setItem('currentOutcome', p2WarOutcome);
         localStorage.removeItem('war');
         warButton.style.visibility = 'hidden';
+        draw2Button.style.visibility = 'visible';
       } else {
         outcome.innerText = warOutcomeContinue;
         localStorage.setItem('currentOutcome', warOutcomeContinue);
         warButton.style.visibility = 'visible';
+        draw2Button.style.visibility = 'hidden';
         localStorage.setItem('war', true);
       }
 
