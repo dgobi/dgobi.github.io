@@ -91,6 +91,7 @@ function drawTwo(){
   fetch(url)
     .then(res => res.json())
     .then(data => {
+      changeDrawButton(data.remaining, 2);
       player1Img.style.visibility = 'visible';
       player2Img.style.visibility = 'visible';
       cardBacks.forEach(a => a.style.visibility = 'hidden');
@@ -147,6 +148,7 @@ function drawFour(){
   fetch(url)
     .then(res => res.json())
     .then(data => {
+      changeDrawButton(data.remaining, 4);
       player1Img.style.visibility = 'visible';
       player2Img.style.visibility = 'visible';
       cardBacks.forEach(card => card.style.visibility = 'visible');
