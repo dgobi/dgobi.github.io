@@ -7,16 +7,19 @@ const cardsLeft = document.querySelector('#cardsLeft');
 const cardBacks = document.querySelectorAll('.cardBack');
 const warButton = document.querySelector('#war');
 const draw2Button = document.querySelector('#draw2');
+const cardBack1 = document.querySelector('#cardBack1')
+const cardBack2 = document.querySelector('#cardBack2')
 
-const p1Outcome = 'Player wins and takes both cards!';
-const p2Outcome = 'The computer wins and takes both cards!';
-const warOutcome = 'This means WAR! Click to draw more cards!';
+const p1Outcome = 'Player wins and takes both cards! Click to draw two more cards!';
+const p2Outcome = 'The computer wins and takes both cards! Click to draw two more cards!';
+const warOutcome = 'This means WAR! Click to draw four more cards!';
 const p1WarOutcome = 'Player wins the war and takes all four cards!';
-const p2WarOutcome = 'The computer wins the war and takes all four cards!';
-const warOutcomeContinue = 'The WAR goes on! Click to draw again!'
+const p2WarOutcome = 'Computer wins the war and takes all four cards!';
+const warOutcomeContinue = 'The WAR goes on! Click to draw four more cards!!'
 const p1Win = 'No cards left! The player wins! Click the New Game button to start again!';
 const p2Win = 'No cards left! The computer wins! Click the New Game button to start again!';
 const drawWin = 'No cards left! The game ends in a draw! Click the New Game button to start again!';
+const limitedWar = 'This means WAR! Only 2 cards left - click to draw the last cards!'
 
 document.querySelector('#newGame').addEventListener('click', newGame);
 draw2Button.addEventListener('click', drawTwo);
@@ -43,11 +46,13 @@ if (localStorage.getItem('deckId')){
 
   if (localStorage.getItem('war')){
     warButton.style.visibility = 'visible';
-    cardBacks.forEach(card => card.style.visibility = 'visible');
+    cardBack1.style.visibility = 'inherit';
+    cardBack2.style.visibility = 'inherit';
     // console.log("showing card backs!");
   } else {
     warButton.style.visibility = 'hidden';
-    cardBacks.forEach(card => card.style.visibility = 'hidden');
+    cardBack1.style.visibility = 'hidden';
+    cardBack2.style.visibility = 'hidden';
     // console.log("hiding card backs!");
   }
 
@@ -84,121 +89,124 @@ function newGame(){
 }
 
 function drawTwo(){
-  const url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
+  checkForWin(2)
 
-  checkCardsLeft(2);
+  if (!localStorage.getItem('gameOver')){
+    const url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=2`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        player1Img.style.visibility = 'visible';
+        player2Img.style.visibility = 'visible';
+        cardBack1.style.visibility = 'hidden';
+        cardBack2.style.visibility = 'hidden';
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      changeDrawButton(data.remaining, 2);
-      player1Img.style.visibility = 'visible';
-      player2Img.style.visibility = 'visible';
-      cardBacks.forEach(a => a.style.visibility = 'hidden');
+        player1Img.src = data.cards[0].image;
+        player2Img.src = data.cards[1].image;
 
-      player1Img.src = data.cards[0].image;
-      player2Img.src = data.cards[1].image;
+        let player1Val = getCardValue(data.cards[0].value);
+        localStorage.setItem('player1Img', player1Img.src);
+        let player2Val = getCardValue(data.cards[1].value);
+        localStorage.setItem('player2Img', player2Img.src);
+        // console.log(deckId);
 
-      let player1Val = getCardValue(data.cards[0].value);
-      localStorage.setItem('player1Img', player1Img.src);
-      let player2Val = getCardValue(data.cards[1].value);
-      localStorage.setItem('player2Img', player2Img.src);
-      // console.log(deckId);
+        if (player1Val > player2Val){
+          addScore('player1', 2);
+          outcome.innerText = p1Outcome;
+          localStorage.setItem('currentOutcome', p1Outcome);
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if (player1Val < player2Val){
+          addScore('player2', 2);
+          outcome.innerText = p2Outcome;
+          localStorage.setItem('currentOutcome', p2Outcome);
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if (player1Val === player2Val && data.remaining === 2){
+          outcome.innerText = limitedWar;
+          localStorage.setItem('currentOutcome', limitedWar);
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if(player1Val === player2Val){
+          outcome.innerText = warOutcome;
+          localStorage.setItem('currentOutcome', warOutcome);
+          warButton.style.visibility = 'visible';
+          draw2Button.style.visibility = 'hidden';
+          localStorage.setItem('war', true);
+        }
 
-      if (player1Val > player2Val){
-        addScore('player1', 2);
-        outcome.innerText = p1Outcome;
-        localStorage.setItem('currentOutcome', p1Outcome);
-        warButton.style.visibility = 'hidden';
-        draw2Button.style.visibility = 'visible';
-        changeDrawButton(data.remaining, 2);
-      } else if (player1Val < player2Val){
-        addScore('player2', 2);
-        outcome.innerText = p2Outcome;
-        localStorage.setItem('currentOutcome', p2Outcome);
-        warButton.style.visibility = 'hidden';
-        draw2Button.style.visibility = 'visible';
-        changeDrawButton(data.remaining, 2);
-      } else {
-        outcome.innerText = warOutcome;
-        localStorage.setItem('currentOutcome', warOutcome);
-        warButton.style.visibility = 'visible';
-        draw2Button.style.visibility = 'hidden';
-        localStorage.setItem('war', true);
-        changeDrawButton(data.remaining, 4);
-      }
+        player1Score.innerText = localStorage.getItem('player1')
+        player2Score.innerText = localStorage.getItem('player2')
 
-      player1Score.innerText = localStorage.getItem('player1')
-      player2Score.innerText = localStorage.getItem('player2')
-
-      localStorage.setItem('cardsLeft', data.remaining);
-      cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
-      // console.log(`Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
-    })
-    .catch(err => {
-      outcome.innerText = `Error (don't draw too fast...)! ${err}`;
-    });
+        localStorage.setItem('cardsLeft', data.remaining);
+        cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
+        // console.log(`Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
+      })
+      .catch(err => {
+        outcome.innerText = `Error (don't draw too fast...)! ${err}`;
+      });
+  }
 }
 
 function drawFour(){
-  const url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`;
+  checkForWin(4)
+  
+  if (!localStorage.getItem('gameOver')){
+    const url = `https://deckofcardsapi.com/api/deck/${deckId}/draw/?count=4`;
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        player1Img.style.visibility = 'visible';
+        player2Img.style.visibility = 'visible';
+        cardBack1.style.visibility = 'inherit';
+        cardBack2.style.visibility = 'inherit';
 
-  checkCardsLeft(4);
+        player1Img.src = data.cards[0].image;
+        player2Img.src = data.cards[2].image;
 
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      changeDrawButton(data.remaining, 4);
-      player1Img.style.visibility = 'visible';
-      player2Img.style.visibility = 'visible';
-      cardBacks.forEach(card => card.style.visibility = 'visible');
+        let player1Val = getCardValue(data.cards[0].value);
+        localStorage.setItem('player1Img', player1Img.src);
+        let player2Val = getCardValue(data.cards[2].value);
+        localStorage.setItem('player2Img', player2Img.src);
 
-      player1Img.src = data.cards[0].image;
-      player2Img.src = data.cards[2].image;
+        if (player1Val > player2Val){
+          addScore('player1', 4);
+          outcome.innerText = p1WarOutcome;
+          localStorage.setItem('currentOutcome', p1WarOutcome);
+          localStorage.removeItem('war');
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if (player1Val < player2Val){
+          addScore('player2', 4);
+          outcome.innerText = p2WarOutcome;
+          localStorage.setItem('currentOutcome', p2WarOutcome);
+          localStorage.removeItem('war');
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if(player1Val === player2Val && data.remaining === 2){
+          outcome.innerText = limitedWar;
+          localStorage.setItem('currentOutcome', limitedWar);
+          warButton.style.visibility = 'hidden';
+          draw2Button.style.visibility = 'visible';
+        } else if (player1Val === player2Val){
+          outcome.innerText = warOutcomeContinue;
+          localStorage.setItem('currentOutcome', warOutcomeContinue);
+          warButton.style.visibility = 'visible';
+          draw2Button.style.visibility = 'hidden';
+          localStorage.setItem('war', true);
+        }
 
-      let player1Val = getCardValue(data.cards[0].value);
-      localStorage.setItem('player1Img', player1Img.src);
-      let player2Val = getCardValue(data.cards[2].value);
-      localStorage.setItem('player2Img', player2Img.src);
-      // console.log(deckId);
+        player1Score.innerText = localStorage.getItem('player1')
+        player2Score.innerText = localStorage.getItem('player2')
 
-      if (player1Val > player2Val){
-        addScore('player1', 4);
-        outcome.innerText = p1WarOutcome;
-        localStorage.setItem('currentOutcome', p1WarOutcome);
-        localStorage.removeItem('war');
-        warButton.style.visibility = 'hidden';
-        draw2Button.style.visibility = 'visible';
-        cardBacks.forEach(a => a.style.visibility = 'hidden');
-        changeDrawButton(data.remaining, 2);
-      } else if (player1Val < player2Val){
-        addScore('player2', 4);
-        outcome.innerText = p2WarOutcome;
-        localStorage.setItem('currentOutcome', p2WarOutcome);
-        localStorage.removeItem('war');
-        warButton.style.visibility = 'hidden';
-        draw2Button.style.visibility = 'visible';
-        changeDrawButton(data.remaining, 2);
-        cardBacks.forEach(a => a.style.visibility = 'hidden');
-      } else {
-        outcome.innerText = warOutcomeContinue;
-        localStorage.setItem('currentOutcome', warOutcomeContinue);
-        warButton.style.visibility = 'visible';
-        draw2Button.style.visibility = 'hidden';
-        localStorage.setItem('war', true);
-        changeDrawButton(data.remaining, 4);
-      }
-
-      player1Score.innerText = localStorage.getItem('player1')
-      player2Score.innerText = localStorage.getItem('player2')
-
-      localStorage.setItem('cardsLeft', data.remaining);
-      cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
-      // console.log(`WAR!! Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
-    })
-    .catch(err => {
-      outcome.innerText = `Error (don't draw too fast...)! ${err}`;
-    });
+        localStorage.setItem('cardsLeft', data.remaining);
+        cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
+        // console.log(`WAR!! Player 1: ${player1Val} | Player 2: ${player2Val} | Cards remaining: ${data.remaining}`);
+      })
+      .catch(err => {
+        outcome.innerText = `Error (don't draw too fast...)! ${err}`;
+      });
+  }
 }
 
 function getCardValue(val){
@@ -234,34 +242,32 @@ function clearScreen(data){
   player2Img.style.visibility = 'hidden';
   outcome.innerText = "";
   draw2Button.style.visibility = 'visible';
+  draw2Button.innerText = 'Draw';
 }
 
-function checkCardsLeft(draw){
-  if (Number(localStorage.getItem('cardsLeft')) > draw){
-    return;
-  } else if(Number(localStorage.getItem('player1')) > Number(localStorage.getItem('player2'))) {
+function checkForWin(draw){
+  // console.log(`check for win...cards left: ${localStorage.getItem('cardsLeft')}`)
+  if(Number(localStorage.getItem('cardsLeft')) === draw){
+    draw2Button.innerText = 'Finish Game';
+  } 
+
+  if(Number(localStorage.getItem('player1')) > Number(localStorage.getItem('player2')) && Number(localStorage.getItem('cardsLeft')) === 0) {
     outcome.innerText = p1Win;
     localStorage.setItem('currentOutcome', p1Win);
     draw2Button.style.visibility = 'hidden';
     warButton.style.visibility = 'hidden';
     localStorage.setItem('gameOver', true);
-  } else if(Number(localStorage.getItem('player2')) > Number(localStorage.getItem('player1'))) {
+  } else if(Number(localStorage.getItem('player2')) > Number(localStorage.getItem('player1')) && Number(localStorage.getItem('cardsLeft')) === 0) {
     outcome.innerText = p2Win;
     localStorage.setItem('currentOutcome', p2Win);
     draw2Button.style.visibility = 'hidden';
     warButton.style.visibility = 'hidden';
     localStorage.setItem('gameOver', true);
-  } else {
+  } else if(Number(localStorage.getItem('player2')) === Number(localStorage.getItem('player1')) && Number(localStorage.getItem('cardsLeft')) === 0){
     outcome.innerText = drawWin;
     localStorage.setItem('currentOutcome', drawWin);
     draw2Button.style.visibility = 'hidden';
     warButton.style.visibility = 'hidden';
     localStorage.setItem('gameOver', true);
-  }
-}
-
-function changeDrawButton(remaining, draw){
-  if (remaining === draw){
-    draw2Button.innerText = "Last Draw!"
   }
 }
