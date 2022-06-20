@@ -14,9 +14,9 @@ const warOutcome = 'This means WAR! Click to draw more cards!';
 const p1WarOutcome = 'Player wins the war and takes all four cards!';
 const p2WarOutcome = 'The computer wins the war and takes all four cards!';
 const warOutcomeContinue = 'The WAR goes on! Click to draw again!'
-const p1Win = 'No cards left! The player wins! Click the button to start a new game!';
-const p2Win = 'No cards left! The computer wins! Click the button to start a new game!';
-const drawWin = 'No cards left! The game ends in a draw! Click the button to start a new game!';
+const p1Win = 'No cards left! The player wins! Click the New Game button to start again!';
+const p2Win = 'No cards left! The computer wins! Click the New Game button to start again!';
+const drawWin = 'No cards left! The game ends in a draw! Click the New Game button to start again!';
 
 document.querySelector('#newGame').addEventListener('click', newGame);
 draw2Button.addEventListener('click', drawTwo);
@@ -260,6 +260,6 @@ function checkCardsLeft(draw){
 
 function changeDrawButton(remaining, draw){
   if (remaining === draw){
-    draw2Button.innerText = "Finish Game"
+    draw2Button.innerText = "Last Draw!"
   }
 }
