@@ -217,17 +217,20 @@ function clearScreen(data){
   localStorage.setItem('player2', 0);
   localStorage.removeItem('gameOver');
   localStorage.removeItem('war');
-  document.querySelector('#cardsLeft').innerText = `Cards remaining: ${data.remaining}`;
-  document.querySelector('#player1Score').innerText = localStorage.getItem('player1')
-  document.querySelector('#player2Score').innerText = localStorage.getItem('player2')
-  document.querySelector('#player1').style.visibility = 'hidden';
-  document.querySelector('#player2').style.visibility = 'hidden';
-  document.querySelector('#outcome').innerText = "";
+  cardsLeft.innerText = `Cards remaining: ${data.remaining}`;
+  player1Score.innerText = localStorage.getItem('player1')
+  player2Score.innerText = localStorage.getItem('player2')
+  player1Img.style.visibility = 'hidden';
+  player2Img.style.visibility = 'hidden';
+  outcome.innerText = "";
+  draw2Button.style.visibility = 'visible';
 }
 
 function checkCardsLeft(draw){
-  if (Number(localStorage.getItem('cardsLeft')) >= draw){
+  if (Number(localStorage.getItem('cardsLeft')) > draw){
     return;
+  } else if(Number(localStorage.getItem('cardsLeft')) === draw){
+    draw2Button.innerText = 'Finish Game'
   } else if(Number(localStorage.getItem('player1')) > Number(localStorage.getItem('player2'))) {
     outcome.innerText = p1Win;
     localStorage.setItem('currentOutcome', p1Win);
