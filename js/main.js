@@ -59,6 +59,9 @@ if (localStorage.getItem('deckId')){
     draw2Button.style.visibility = 'visible';
     console.log("game continues!");
   }
+} else {
+  player1Img.style.visibility = 'hidden';
+  player2Img.style.visibility = 'hidden';
 }
 
 console.log(`Local var deckId = ${deckId}`);
