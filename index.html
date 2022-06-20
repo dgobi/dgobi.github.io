@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    	<meta charset="utf-8">
+    	<meta name="description" content="This is where your description goes">
+    	<meta name="keywords" content="one, two, three">
+
+		<title>Title in the tab</title>
+
+		<!-- external CSS link -->
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	<body>
+		<h1>The Game of War!</h1>
+
+		<button id='newGame'>New Game</button>
+		<button id='draw2'>Deal 2 Cards</button>
+
+		<h3 id="cardsLeft"></h3>
+
+		<h2>Player</h2>
+		<h3>Score:</h3><h3 id="player1Score"></h3>
+		<img id="player1" src="" alt="playing card">
+		<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
+
+
+		<h2>Computer</h2>
+		<h3>Score:</h3><h3 id="player2Score"></h3>
+		<img id="player2" src="" alt="playing card">
+		<img class="cardBack" src="img/card_back.jpg" alt="face down playing card">
+
+		<h2 id='outcome'></h2>
+		<button id='war'>WAR!</button>
+
+		<script type="text/javascript" src="js/main.js"></script>
+	</body>
+</html>
