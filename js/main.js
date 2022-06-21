@@ -10,16 +10,16 @@ const draw2Button = document.querySelector('#draw2');
 const cardBack1 = document.querySelector('#cardBack1')
 const cardBack2 = document.querySelector('#cardBack2')
 
-const p1Outcome = 'Player wins and takes both cards! Click to draw two more cards!';
-const p2Outcome = 'The computer wins and takes both cards! Click to draw two more cards!';
-const warOutcome = 'This means WAR! Click to draw four more cards!';
+const p1Outcome = 'Player wins and takes both cards!';
+const p2Outcome = 'Computer wins and takes both cards!';
+const warOutcome = 'WAR! Click to draw four more cards!';
 const p1WarOutcome = 'Player wins the war and takes all four cards!';
 const p2WarOutcome = 'Computer wins the war and takes all four cards!';
-const warOutcomeContinue = 'The WAR goes on! Click to draw four more cards!!'
-const p1Win = 'No cards left! The player wins! Click the New Game button to start again!';
-const p2Win = 'No cards left! The computer wins! Click the New Game button to start again!';
-const drawWin = 'No cards left! The game ends in a draw! Click the New Game button to start again!';
-const limitedWar = 'This means WAR! Only 2 cards left - click to draw the last cards!'
+const warOutcomeContinue = 'WAR goes on!'
+const p1Win = 'Player wins! Click the New Game button to start again!';
+const p2Win = 'Computer wins! Click the New Game button to start again!';
+const drawWin = 'Game ends in a draw! Click the New Game button to start again!';
+const limitedWar = 'WAR! Only 2 cards left!'
 
 document.querySelector('#newGame').addEventListener('click', newGame);
 draw2Button.addEventListener('click', drawTwo);

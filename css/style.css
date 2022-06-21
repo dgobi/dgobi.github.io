@@ -33,11 +33,11 @@ img{
 #gameArea{
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 /* #gameArea > *{
-  width: 50%;
+  border: 2px solid black;
 } */
 
 #results{
@@ -45,10 +45,12 @@ img{
   flex-direction: column;
   align-items: center;
   margin: 100px 0;
+  width: 30%;
 }
 
 #info{
   margin-left: 20px;
+  width: 20%
 }
 
 h1{
@@ -59,21 +61,26 @@ h1{
 
 h1, h2{
   font-family: 'Black Ops One', cursive;
+  font-weight: 400;
   margin: 5px 0;
 }
 
 h3{
   font-family: 'Mukta', sans-serif;
+  font-weight: 400;
   margin: 5px 0;
 }
 
 #outcome{
   font-size: 180%;
+  width: 60%;
 }
 
 #cardsLeft{
-  font-style: italic;
+  /* font-style: italic; */
   margin-bottom: 20px;
+  font-family: 'Black Ops One', cursive;
+  font-weight: 400;
 }
 
 .scoreSection{
